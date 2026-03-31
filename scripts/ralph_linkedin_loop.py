@@ -51,33 +51,67 @@ def log_message(message: str):
         f.write(f"\n{log_line}")
 
 
+def strip_markdown(text):
+    """Remove markdown formatting from text"""
+    import re
+
+    # Remove headers (# Header -> Header)
+    text = re.sub(r'^#+\s*', '', text, flags=re.MULTILINE)
+
+    # Remove bold (**text** -> text)
+    text = text.replace('**', '')
+
+    # Remove italic (*text* -> text)
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)
+
+    # Remove links ([text](url) -> text)
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+
+    # Remove code blocks (```code``` -> code)
+    text = re.sub(r'```[\s\S]*?```', '', text)
+
+    # Remove inline code (`code` -> code)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+
+    # Remove blockquotes (> text -> text)
+    text = re.sub(r'^>\s*', '', text, flags=re.MULTILINE)
+
+    # Clean up multiple blank lines
+    text = re.sub(r'\n{3,}', '\n\n', text)
+
+    return text.strip()
+
+
 def read_post_file(filepath):
     """Read LinkedIn post draft file"""
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Extract frontmatter
     frontmatter = {}
     body = content
-    
+
     if content.startswith('---'):
         parts = content.split('---', 2)
         if len(parts) >= 3:
             fm_text = parts[1]
             body = parts[2].strip()
-            
+
             for line in fm_text.strip().split('\n'):
                 if ':' in line:
                     key, value = line.split(':', 1)
                     frontmatter[key.strip()] = value.strip()
-    
+
     # Extract post content from body
     post_content = body
     if "## Preview" in body:
         post_content = body.split("## Preview")[1].strip()
         if "---" in post_content:
             post_content = post_content.split("---")[0].strip()
-    
+
+    # Strip markdown formatting for LinkedIn
+    post_content = strip_markdown(post_content)
+
     return frontmatter, post_content
 
 
@@ -130,7 +164,7 @@ def publish_direct(post_content):
 
     context = None
     browser = None
-    
+
     try:
         # Import playwright
         from playwright.sync_api import sync_playwright
@@ -150,7 +184,7 @@ def publish_direct(post_content):
                 viewport={"width": 1920, "height": 1080},
                 args=["--disable-gpu", "--no-sandbox"]
             )
-            
+
             # Get the page from context
             page = context.pages[0] if context.pages else context.new_page()
 
@@ -177,19 +211,22 @@ def publish_direct(post_content):
 
             # Find editor and type content
             log_message("⌨️  Typing content...")
-            editor = page.locator('div[contenteditable="true"][role="textbox"]').first
-            editor.focus()
-
-            # Type in chunks to avoid issues
-            chunks = [post_content[i:i+500] for i in range(0, len(post_content), 500)]
-            for chunk in chunks[:6]:  # Max 3000 chars
+            
+            # Type in smaller chunks with better timing to avoid issues
+            chunks = [post_content[i:i+200] for i in range(0, len(post_content), 200)]
+            
+            for i, chunk in enumerate(chunks[:15]):  # Max 3000 chars
+                # Re-find editor before each chunk to avoid stale element
+                editor = page.locator('div[contenteditable="true"][role="textbox"]').first
+                editor.wait_for(state='visible', timeout=5000)
+                editor.focus()
+                page.wait_for_timeout(1000)
+                
+                log_message(f"  Typing chunk {i+1}/{min(len(chunks), 15)}...")
                 editor.type(chunk, delay=50)
-                page.wait_for_timeout(100)
+                page.wait_for_timeout(2000)  # Wait between chunks
 
-            page.wait_for_timeout(2000)
-
-            # Click Post button using Playwright locator
-            log_message("🚀 Publishing...")
+            page.wait_for_timeout(3000)
 
             try:
                 # Find the blue Post button in the dialog
