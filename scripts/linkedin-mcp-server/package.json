@@ -1,0 +1,27 @@
+{
+  "name": "linkedin-mcp-server",
+  "version": "1.0.0",
+  "description": "LinkedIn MCP Server for Personal AI Employee - Post to LinkedIn via Playwright",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "auth": "node auth.js",
+    "test": "node test.js",
+    "post": "node test-post.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "playwright": "^1.40.0",
+    "dotenv": "^16.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "linkedin",
+    "playwright",
+    "automation",
+    "ai-employee"
+  ],
+  "license": "MIT"
+}

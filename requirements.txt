@@ -1,0 +1,35 @@
+# Python dependencies for AI Employee Silver Tier
+# Install with: pip install -r requirements.txt
+
+# =============================================================================
+# Core Dependencies (Required)
+# =============================================================================
+
+# File system watching (for File System Watcher)
+watchdog>=4.0.0
+
+# Gmail API (required for Gmail Watcher)
+google-auth>=2.0.0
+google-auth-oauthlib>=1.0.0
+google-auth-httplib2>=0.2.0
+google-api-python-client>=2.0.0
+
+# =============================================================================
+# Optional Dependencies (For Future Features)
+# =============================================================================
+
+# Playwright (for WhatsApp/LinkedIn automation)
+# playwright>=1.40.0
+
+# MCP Server (for Model Context Protocol)
+# mcp>=0.1.0
+
+# =============================================================================
+# Development Dependencies (Optional)
+# =============================================================================
+
+# Testing
+# pytest>=7.0.0
+
+# Linting
+# ruff>=0.1.0

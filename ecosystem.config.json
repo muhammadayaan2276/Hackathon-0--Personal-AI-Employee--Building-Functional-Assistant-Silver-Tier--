@@ -1,0 +1,40 @@
+{
+  "apps": [
+    {
+      "name": "ai-employee-orchestrator",
+      "script": "scripts/orchestrator.py",
+      "interpreter": "python",
+      "cwd": ".",
+      "instances": 1,
+      "autorestart": true,
+      "watch": false,
+      "max_memory_restart": "500M",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "log_file": "AI_Employee_Vault/Logs/pm2_orchestrator.log",
+      "error_file": "AI_Employee_Vault/Logs/pm2_orchestrator_error.log",
+      "out_file": "AI_Employee_Vault/Logs/pm2_orchestrator_out.log",
+      "merge_logs": true,
+      "log_date_format": "YYYY-MM-DD HH:mm:ss"
+    },
+    {
+      "name": "ai-employee-gmail-watcher",
+      "script": "scripts/gmail_watcher.py",
+      "interpreter": "python",
+      "cwd": ".",
+      "instances": 1,
+      "autorestart": true,
+      "watch": false,
+      "max_memory_restart": "300M",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "log_file": "AI_Employee_Vault/Logs/pm2_gmail_watcher.log",
+      "error_file": "AI_Employee_Vault/Logs/pm2_gmail_watcher_error.log",
+      "out_file": "AI_Employee_Vault/Logs/pm2_gmail_watcher_out.log",
+      "merge_logs": true,
+      "log_date_format": "YYYY-MM-DD HH:mm:ss"
+    }
+  ]
+}

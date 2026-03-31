@@ -1,0 +1,10 @@
+Get-Content : Cannot find path 'C:\Users\pc\Desktop\desktop-tutorial\Hackathon-0--Personal-AI-Employee--B
+uilding-Autonomous--FTEs--Bronze-Tier-- - Copy\AI_Employee_Vault\Logs\gmail_orchestrator_2026-03-29.log' 
+because it does not exist.
+At line:1 char:1
++ Get-Content AI_Employee_Vault\Logs\gmail_orchestrator_2026-03-29.log  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\pc\Des..._2026-03-29.log:String) [Get-Content],  
+   ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 

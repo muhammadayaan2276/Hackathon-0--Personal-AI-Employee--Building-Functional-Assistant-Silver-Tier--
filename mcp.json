@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "gmail": {
+      "command": "node",
+      "args": [
+        "scripts/email-mcp-server/index.js"
+      ],
+      "cwd": ".",
+      "env": {
+        "GMAIL_CLIENT_ID": "your-client-id-from-google-cloud",
+        "GMAIL_CLIENT_SECRET": "your-client-secret",
+        "GMAIL_REFRESH_TOKEN": "your-refresh-token",
+        "GMAIL_SENDER_EMAIL": "your-email@gmail.com"
+      }
+    },
+    "linkedin": {
+      "command": "node",
+      "args": [
+        "scripts/linkedin-mcp-server/index.js"
+      ],
+      "cwd": "."
+    }
+  }
+}
